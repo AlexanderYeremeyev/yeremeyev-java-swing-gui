@@ -128,7 +128,7 @@ class TabbedPaneUI extends BasicTabbedPaneUI {
     private void paintRightTabBorder(Graphics graphics, int x, int y, int w, int h) {
         int halfArc = arc / 2;
         graphics.drawLine(x, y, x + w - halfArc, y);
-        graphics.drawArc(x - arc, y, arc, arc, 0, 90);
+        graphics.drawArc(x + w - arc, y, arc, arc, 0, 90);
         graphics.drawLine(x + w, y + halfArc, x + w, y + h - halfArc);
         graphics.drawArc(x + w - arc, y + h - arc, arc, arc, 270, 90);
         graphics.drawLine(x, y + h, x + w - halfArc, y + h);
