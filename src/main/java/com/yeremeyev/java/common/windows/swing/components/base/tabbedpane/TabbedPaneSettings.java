@@ -2,6 +2,22 @@ package com.yeremeyev.java.common.windows.swing.components.base.tabbedpane;
 
 public class TabbedPaneSettings {
 
+    public static String getTextColorName(String name) {
+        return String.format(TabbedPaneConstants.TEXT_COLOR_NAME, name);
+    }
+
+    public static String getTextColorName() {
+        return getTextColorName(TabbedPane.DEFAULT_NAME);
+    }
+
+    public static String getSelectedTextColorName(String name) {
+        return String.format(TabbedPaneConstants.SELECTED_TEXT_COLOR_NAME, name);
+    }
+
+    public static String getSelectedTextColorName() {
+        return getSelectedTextColorName(TabbedPane.DEFAULT_NAME);
+    }
+
     public static String getBackgroundColorName(String name) {
         return String.format(TabbedPaneConstants.BACKGROUND_COLOR_NAME, name);
     }
@@ -64,6 +80,14 @@ public class TabbedPaneSettings {
 
     public static String getTabItemArcName() {
         return getTabItemArcName(TabbedPane.DEFAULT_NAME);
+    }
+
+    public static String getTabItemTextOffsetName(String name) {
+        return String.format(TabbedPaneConstants.TAB_ITEM_TEXT_OFFSET_NAME, name);
+    }
+
+    public static String getTabItemTextOffsetName() {
+        return getTabItemTextOffsetName(TabbedPane.DEFAULT_NAME);
     }
 
     public static String getTabAreaInsetsName(String name) {

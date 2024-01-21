@@ -2,6 +2,7 @@ package com.yeremeyev.java.common.windows.swing.tools;
 
 import javax.swing.UIManager;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Insets;
 
 public class UIManagerTools {
@@ -25,6 +26,14 @@ public class UIManagerTools {
 
     public static Insets getInsets(String name, Insets defaultValue) {
         Insets result = UIManager.getInsets(name);
+        if (result == null) {
+            result = defaultValue;
+        }
+        return result;
+    }
+
+    public static Font getFont(String name, Font defaultValue) {
+        Font result = UIManager.getFont(name);
         if (result == null) {
             result = defaultValue;
         }

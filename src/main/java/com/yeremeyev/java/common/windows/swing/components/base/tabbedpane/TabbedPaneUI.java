@@ -6,6 +6,7 @@ import javax.swing.JComponent;
 import javax.swing.plaf.basic.BasicTabbedPaneUI;
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -16,6 +17,8 @@ import java.awt.Stroke;
 class TabbedPaneUI extends BasicTabbedPaneUI {
     private String name;
 
+    private Color textColor;
+    private Color selectedTextColor;
     private Color backgroundColor;
     private Color selectedBackgroundColor;
     private Color borderColor;
@@ -25,6 +28,7 @@ class TabbedPaneUI extends BasicTabbedPaneUI {
     private int contentBorderWidth;
     private int arc;
     private int tabItemHeight;
+    private int tabItemTextOffset;
     private Insets contentBorderInsets;
     private Stroke contentBorderStroke;
 
@@ -51,7 +55,11 @@ class TabbedPaneUI extends BasicTabbedPaneUI {
         if (tabPlacement == TOP || tabPlacement == BOTTOM) {
             return tabItemHeight;
         }
-        return super.calculateTabHeight(tabPlacement, tabIndex, fontHeight);
+        String title = tabPane.getTitleAt(tabIndex);
+        FontMetrics fontMetrics = getFontMetrics();
+        int result = tabItemTextOffset * 2;
+        result += fontMetrics.stringWidth(title);
+        return result;
     }
 
     /*
@@ -148,6 +156,8 @@ class TabbedPaneUI extends BasicTabbedPaneUI {
     }
 
     private void styleInitialize() {
+        textColor = UIManagerTools.getColor(TabbedPaneSettings.getTextColorName(name), TabbedPaneConstants.DEFAULT_TEXT_COLOR);
+        selectedTextColor = UIManagerTools.getColor(TabbedPaneSettings.getSelectedTextColorName(name), TabbedPaneConstants.DEFAULT_SELECTED_TEXT_COLOR);
         backgroundColor = UIManagerTools.getColor(TabbedPaneSettings.getBackgroundColorName(name), TabbedPaneConstants.DEFAULT_BACKGROUND_COLOR);
         selectedBackgroundColor = UIManagerTools.getColor(TabbedPaneSettings.getSelectedBackgroundColorName(name), TabbedPaneConstants.DEFAULT_SELECTED_BACKGROUND_COLOR);
         borderColor = UIManagerTools.getColor(TabbedPaneSettings.getBorderColorName(name), TabbedPaneConstants.DEFAULT_BORDER_COLOR);
@@ -157,6 +167,7 @@ class TabbedPaneUI extends BasicTabbedPaneUI {
         contentBorderWidth = UIManagerTools.getInt(TabbedPaneSettings.getContentBorderWidthName(name), TabbedPaneConstants.DEFAULT_CONTENT_BORDER_WIDTH);
         tabItemHeight = UIManagerTools.getInt(TabbedPaneSettings.getTabItemHeightName(name), TabbedPaneConstants.DEFAULT_TAB_ITEM_HEIGHT);
         arc = UIManagerTools.getInt(TabbedPaneSettings.getTabItemArcName(name), TabbedPaneConstants.DEFAULT_TAB_ITEM_ARC);
+        tabItemTextOffset = UIManagerTools.getInt(TabbedPaneSettings.getTabItemTextOffsetName(name), TabbedPaneConstants.DEFAULT_TAB_ITEM_TEXT_OFFSET);
 
         // offsets for tab items area
         tabAreaInsets = UIManagerTools.getInsets(TabbedPaneSettings.getTabAreaInsetsName(name), TabbedPaneConstants.DEFAULT_TAB_AREA_INSETS);
@@ -176,7 +187,7 @@ class TabbedPaneUI extends BasicTabbedPaneUI {
     public void installUI(JComponent component) {
         super.installUI(component);
 
-        name = ((TabbedPane)component).getComponentName();
+        name = ((TabbedPane) component).getComponentName();
     }
 
     @Override
@@ -261,4 +272,35 @@ class TabbedPaneUI extends BasicTabbedPaneUI {
         graphics.setStroke(originalStroke);
     }
 
+    @Override
+    protected void paintText(Graphics g, int tabPlacement,
+                             Font font, FontMetrics metrics, int tabIndex,
+                             String title, Rectangle textRect,
+                             boolean isSelected)
+    {
+        g.setColor(isSelected ? this.selectedTextColor : this.textColor);
+
+        if (tabPlacement == TOP || tabPlacement == BOTTOM) {
+            super.paintText(g, tabPlacement, font, metrics, tabIndex, title, textRect, isSelected);
+            return;
+        }
+
+        Graphics2D graphics = (Graphics2D) g;
+
+        int x = textRect.x;
+        int y = textRect.y;
+        FontMetrics fontMetrics = getFontMetrics();
+        int halfHeight = fontMetrics.getHeight() / 2;
+
+        int angle = tabPlacement == RIGHT ? 90 : -90;
+        int xCorrecition = fontMetrics.stringWidth(title) / 2;
+        xCorrecition += tabPlacement == RIGHT ? -halfHeight : halfHeight;
+        int yCorrecition = tabPlacement == RIGHT ? -tabItemHeight / 2 + halfHeight : tabItemHeight / 2;
+
+        graphics.translate((float) x, (float) y);
+        graphics.rotate(Math.toRadians(angle));
+        graphics.drawString(title, -xCorrecition, yCorrecition);
+        graphics.rotate(-Math.toRadians(angle));
+        graphics.translate(-(float) x, -(float) y);
+    }
 }
