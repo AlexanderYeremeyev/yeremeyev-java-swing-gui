@@ -255,7 +255,23 @@ class TabbedPaneUI extends BasicTabbedPaneUI {
         graphics.setStroke(contentBorderStroke);
         graphics.setColor(contentBorderColor);
 
-        graphics.drawLine(x, y, x, y + h);
+        switch (tabPlacement) {
+            case LEFT:
+                int widthBeforeSpace = tabAreaInsets.left;
+                int spaceWidth = rects[selectedIndex].height;
+                for (int i = 0; i < selectedIndex; i++) {
+                    widthBeforeSpace += rects[i].height;
+                }
+
+                graphics.drawLine(x, y, x, y + widthBeforeSpace);
+                graphics.drawLine(x, y + widthBeforeSpace + spaceWidth, x, y + h);
+                break;
+            case RIGHT:
+            case BOTTOM:
+            case TOP:
+            default:
+                graphics.drawLine(x, y, x, y + h);
+        }
 
         graphics.setStroke(originalStroke);
     }
@@ -267,7 +283,23 @@ class TabbedPaneUI extends BasicTabbedPaneUI {
         graphics.setStroke(contentBorderStroke);
         graphics.setColor(contentBorderColor);
 
-        graphics.drawLine(x + w - 1, y, x + w - 1, y + h);
+        switch (tabPlacement) {
+            case RIGHT:
+                int widthBeforeSpace = tabAreaInsets.left;
+                int spaceWidth = rects[selectedIndex].height;
+                for (int i = 0; i < selectedIndex; i++) {
+                    widthBeforeSpace += rects[i].height;
+                }
+
+                graphics.drawLine(x + w - 1, y, x + w - 1, y + widthBeforeSpace);
+                graphics.drawLine(x + w - 1, y + widthBeforeSpace + spaceWidth, x + w - 1, y + h);
+                break;
+            case LEFT:
+            case BOTTOM:
+            case TOP:
+            default:
+                graphics.drawLine(x + w - 1, y, x + w - 1, y + h);
+        }
 
         graphics.setStroke(originalStroke);
     }
