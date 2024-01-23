@@ -31,6 +31,7 @@ class TabbedPaneUI extends BasicTabbedPaneUI {
     private int tabItemTextOffset;
     private Insets contentBorderInsets;
     private Stroke contentBorderStroke;
+    private Font font;
 
     public TabbedPaneUI() {
         super();
@@ -174,6 +175,10 @@ class TabbedPaneUI extends BasicTabbedPaneUI {
         contentBorderInsets = UIManagerTools.getInsets(TabbedPaneSettings.getContentBorderInsetsName(name), TabbedPaneConstants.DEFAULT_CONTENT_BORDER_INSETS);
 
         contentBorderStroke = new BasicStroke(contentBorderWidth);
+        font = UIManagerTools.getFont(TabbedPaneSettings.getFontName(name), null);
+        if (font != null) {
+            tabPane.setFont(font);
+        }
     }
 
     @Override
@@ -308,9 +313,11 @@ class TabbedPaneUI extends BasicTabbedPaneUI {
     protected void paintText(Graphics g, int tabPlacement,
                              Font font, FontMetrics metrics, int tabIndex,
                              String title, Rectangle textRect,
-                             boolean isSelected)
-    {
+                             boolean isSelected) {
         g.setColor(isSelected ? this.selectedTextColor : this.textColor);
+        if (this.font != null) {
+            g.setFont(this.font);
+        }
 
         if (tabPlacement == TOP || tabPlacement == BOTTOM) {
             super.paintText(g, tabPlacement, font, metrics, tabIndex, title, textRect, isSelected);

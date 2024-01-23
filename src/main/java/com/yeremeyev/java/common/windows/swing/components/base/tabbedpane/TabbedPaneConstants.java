@@ -38,4 +38,5 @@ class TabbedPaneConstants {
 
     static final String TAB_AREA_INSETS_NAME = "tabbed_pane_{}_tab_area_insets";
     static final String CONTENT_BORDER_INSETS_NAME = "tabbed_pane_{}_content_border_insets";
+    static final String FONT_NAME = "tabbed_pane_{}_font";
 }

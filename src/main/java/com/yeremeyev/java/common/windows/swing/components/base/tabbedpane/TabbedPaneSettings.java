@@ -105,4 +105,12 @@ public class TabbedPaneSettings {
     public static String getContentBorderInsetsName() {
         return getContentBorderInsetsName(TabbedPane.DEFAULT_NAME);
     }
+
+    public static String getFontName(String name) {
+        return String.format(TabbedPaneConstants.FONT_NAME, name);
+    }
+
+    public static String getFontName() {
+        return getFontName(TabbedPane.DEFAULT_NAME);
+    }
 }
