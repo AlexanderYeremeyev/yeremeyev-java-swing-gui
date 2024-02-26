@@ -1,0 +1,11 @@
+yeremeyev java swing gui
+
+-------------------------------------------------------------------------------
+
+# version 1.0.0
+
+#### on Released on 26-02-2024 ####
+
+### Overall improvements ###
+* tabbedpane component
+* font builder
