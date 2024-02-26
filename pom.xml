@@ -7,7 +7,7 @@
     <groupId>com.yeremeyev.java</groupId>
     <artifactId>yeremeyev-java-swing-gui</artifactId>
     <name>Base Swing Components</name>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.0</version>
     <packaging>jar</packaging>
 
     <properties>
